@@ -107,8 +107,6 @@ class MissingParamsFailure extends Failure {
             "Missing Params Failure: $suffix Timestamp: ${DateTime.now().toString()}");
 }
 
-// Unexpected
-
 class UnknownFailure extends Failure {
   UnknownFailure({String suffix = ''})
       : super(
