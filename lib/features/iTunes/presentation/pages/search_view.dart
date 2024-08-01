@@ -18,7 +18,30 @@ class SearchView extends StatefulWidget {
 class _SearchViewState extends State<SearchView> {
   Timer? _debounce;
   final TextEditingController _searchController = TextEditingController();
-  List<TrackEntity> playList = [];
+  List<TrackEntity> displayList = [];
+  List<TrackEntity> cacheList = [];
+  int currentPage = 0;
+  final int itemsPerPage = 10;
+
+  void _loadMoreItems() {
+    setState(() {
+      int nextPage = currentPage + 1;
+      int startIndex = currentPage * itemsPerPage;
+      int endIndex = nextPage * itemsPerPage;
+      if (endIndex > cacheList.length) {
+        endIndex = cacheList.length;
+      }
+      displayList.addAll(cacheList.sublist(startIndex, endIndex));
+      currentPage = nextPage;
+    });
+  }
+
+  @override
+  void dispose() {
+    _debounce?.cancel();
+    _searchController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +51,9 @@ class _SearchViewState extends State<SearchView> {
           showErrorDialog(context, state.message);
         }
         if (state is ItunesStateSearchSuccessful) {
-          playList = state.data ?? [];
+          cacheList = state.data ?? [];
+          displayList = cacheList.take(itemsPerPage).toList();
+          currentPage = 1;
         }
       },
       builder: (context, state) {
@@ -69,7 +94,13 @@ class _SearchViewState extends State<SearchView> {
                       suffixIconConstraints:
                           const BoxConstraints(minWidth: 16, minHeight: 16),
                       suffixIcon: state is ItunesStateLoading
-                          ? const CircularProgressIndicator()
+                          ? const Padding(
+                              padding: EdgeInsets.all(12.0),
+                              child: CircularProgressIndicator(
+                                strokeWidth: 2.0,
+                                color: Colors.white,
+                              ),
+                            )
                           : null),
                   onChanged: (value) {
                     if (_debounce?.isActive ?? false) {
@@ -92,7 +123,7 @@ class _SearchViewState extends State<SearchView> {
                 ),
                 Expanded(
                   child: state is ItunesStateSearchSuccessful &&
-                          playList.isEmpty
+                          displayList.isEmpty
                       ? const Center(
                           child: Text(
                             'No results found',
@@ -100,23 +131,32 @@ class _SearchViewState extends State<SearchView> {
                                 TextStyle(fontSize: 30, color: Colors.white70),
                           ),
                         )
-                      : ListView.builder(
-                          itemCount: playList.length,
-                          itemBuilder: (context, index) => ListTile(
-                            contentPadding: const EdgeInsets.all(8.0),
-                            leading: Image.network(playList[index].image!),
-                            title: Text(
-                              playList[index].trackName!,
-                              style: const TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold),
+                      : NotificationListener(
+                          onNotification: (ScrollNotification scrollInfo) {
+                            if (scrollInfo.metrics.pixels ==
+                                    scrollInfo.metrics.maxScrollExtent &&
+                                displayList.length < cacheList.length) {
+                              _loadMoreItems();
+                            }
+                            return false;
+                          },
+                          child: ListView.builder(
+                            itemCount: displayList.length,
+                            itemBuilder: (context, index) => ListTile(
+                              contentPadding: const EdgeInsets.all(8.0),
+                              leading: Image.network(displayList[index].image!),
+                              title: Text(
+                                displayList[index].trackName!,
+                                style: const TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                              subtitle: Text(
+                                'Album: ${displayList[index].collectionName!}',
+                                style: const TextStyle(color: Colors.white60),
+                              ),
                             ),
-                            subtitle: Text(
-                              'Album: ${playList[index].collectionName!}',
-                              style: const TextStyle(color: Colors.white60),
-                            ),
-                          ),
-                        ),
+                          )),
                 )
               ],
             ),
