@@ -11,10 +11,11 @@ class TrackModel extends TrackEntity {
 
   factory TrackModel.fromJson(Map<String, dynamic> json) {
     return TrackModel(
-      artistName: json['artistName'] as String,
-      collectionName: json['collectionName'] as String,
-      trackName: json['trackName'] as String,
-      image: json['artworkUrl100'] as String,
+      artistName: json['artistName'] ?? 'Unknown Artist',
+      collectionName: json['collectionName'] ?? 'Unknown Collection',
+      trackName: json['trackName'] ?? 'Unknown Track',
+      image: json['artworkUrl100'] ??
+          'https://pic.onlinewebfonts.com/svg/img_546302.png',
     );
   }
 }

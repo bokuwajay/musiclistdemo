@@ -18,10 +18,11 @@ class ItunesRemoteDataSourceImpl implements ItunesRemoteDataSource {
       final response = await _apiHelper.execute(
         method: Method.get,
         baseUrl: dotenv.env['itunesBaseURL'],
-        endpoint: '/search?term=${params.term}&limit=200&media=music',
+        endpoint:
+            '/search?term=${params.term.replaceAll(' ', '+')}&limit=200&media=music',
       );
-
       var result = response['results'] as List;
+
       return result.map((e) => TrackModel.fromJson(e)).toList();
     } catch (exception) {
       logger.e(
