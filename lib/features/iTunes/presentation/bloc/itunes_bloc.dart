@@ -11,6 +11,8 @@ class ItunesBloc extends Bloc<ItunesEvent, ItunesState> {
   ItunesBloc(this._itunesSearchUseCase) : super(ItunesStateInitial()) {
     on<ItunesEventSearch>(
       (event, emit) async {
+        emit(const ItunesStateLoading());
+
         final result =
             await _itunesSearchUseCase.call(SearchParams(term: event.term));
 

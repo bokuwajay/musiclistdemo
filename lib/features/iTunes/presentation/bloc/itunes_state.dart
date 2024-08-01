@@ -11,11 +11,10 @@ abstract class ItunesState extends Equatable {
 class ItunesStateInitial extends ItunesState {}
 
 class ItunesStateLoading extends ItunesState {
-  final int? loadingTimeElapsed;
-  const ItunesStateLoading(this.loadingTimeElapsed);
+  const ItunesStateLoading();
 
   @override
-  List<Object?> get props => [loadingTimeElapsed];
+  List<Object?> get props => [];
 }
 
 class ItunesStateFailed extends ItunesState {

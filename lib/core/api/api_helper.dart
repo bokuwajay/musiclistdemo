@@ -1,5 +1,5 @@
 import 'dart:io';
-
+import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:keysoctest/core/error/exceptions.dart';
 
@@ -37,7 +37,6 @@ class ApiHelper {
           response = await _dio.delete(endpoint);
           break;
       }
-
       return _returnResponse(response);
     } on SocketException {
       throw FetchDataException;
@@ -64,11 +63,15 @@ class ApiHelper {
   }
 
   Map<String, dynamic> _returnResponse(Response response) {
+    var responseData;
+    if (response.data is String) {
+      responseData = jsonDecode(response.data);
+    }
     switch (response.statusCode) {
       case 200:
-        return response.data;
+        return responseData ?? response.data;
       case 201:
-        return response.data;
+        return responseData ?? response.data;
       case 400:
         throw BadRequestException;
       case 401:
