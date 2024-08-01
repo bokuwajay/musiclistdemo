@@ -36,6 +36,19 @@ class _SearchViewState extends State<SearchView> {
     });
   }
 
+  void _searchInCache(String query) {
+    final lowerQuery = query.toLowerCase();
+    final filteredList = cacheList.where((track) {
+      return track.trackName!.toLowerCase().contains(lowerQuery) ||
+          track.collectionName!.toLowerCase().contains(lowerQuery);
+    }).toList();
+
+    setState(() {
+      displayList = filteredList.take(itemsPerPage).toList();
+      currentPage = 1;
+    });
+  }
+
   @override
   void dispose() {
     _debounce?.cancel();
@@ -110,9 +123,13 @@ class _SearchViewState extends State<SearchView> {
                     _debounce =
                         Timer(const Duration(milliseconds: 700), () async {
                       if (value.length > 2) {
-                        context
-                            .read<ItunesBloc>()
-                            .add(ItunesEventSearch(term: value));
+                        _searchInCache(value);
+
+                        if (displayList.isEmpty) {
+                          context
+                              .read<ItunesBloc>()
+                              .add(ItunesEventSearch(term: value));
+                        }
                       }
                     });
                   },
