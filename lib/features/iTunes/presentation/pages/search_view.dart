@@ -4,9 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:keysoctest/features/iTunes/domain/entities/track_entity.dart';
 import 'package:keysoctest/features/iTunes/presentation/bloc/itunes_bloc.dart';
+import 'package:keysoctest/features/iTunes/presentation/bloc/itunes_event.dart';
 import 'package:keysoctest/features/iTunes/presentation/bloc/itunes_state.dart';
-import 'package:keysoctest/features/iTunes/presentation/widgets/build_search_result_list.dart';
-import 'package:keysoctest/features/iTunes/presentation/widgets/build_search_text_field.dart';
 import 'package:keysoctest/util/dialogs/error_dialog.dart';
 
 class SearchView extends StatefulWidget {
@@ -23,7 +22,6 @@ class _SearchViewState extends State<SearchView> {
   List<TrackEntity> cacheList = [];
   int currentPage = 0;
   final int itemsPerPage = 10;
-  String sortBy = 'trackName';
 
   void _loadMoreItems() {
     setState(() {
@@ -44,23 +42,9 @@ class _SearchViewState extends State<SearchView> {
       return track.trackName!.toLowerCase().contains(lowerQuery) || track.collectionName!.toLowerCase().contains(lowerQuery);
     }).toList();
 
-    filteredList.sort((a, b) {
-      if (sortBy == 'trackName') {
-        return a.trackName!.toLowerCase().compareTo(b.trackName!.toLowerCase());
-      }
-      return a.collectionName!.toLowerCase().compareTo(b.collectionName!.toLowerCase());
-    });
-
     setState(() {
       displayList = filteredList.take(itemsPerPage).toList();
       currentPage = 1;
-    });
-  }
-
-  void _toggleSort() {
-    setState(() {
-      sortBy = sortBy == 'trackName' ? 'collectionName' : 'trackName';
-      _searchInCache(_searchController.text);
     });
   }
 
@@ -100,21 +84,84 @@ class _SearchViewState extends State<SearchView> {
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Row(
-                  children: [
-                    buildSearchTextField(context, state, _searchController, _debounce, _searchInCache, displayList),
-                    const SizedBox(width: 8.0),
-                    IconButton(
-                        icon: Icon(
-                          size: 40,
-                          sortBy == 'trackName' ? Icons.switch_right : Icons.switch_left,
-                          color: Colors.amber[400],
-                        ),
-                        onPressed: displayList.isEmpty ? null : _toggleSort)
-                  ],
+                const Text(
+                  'Search for Music',
+                  style: TextStyle(color: Colors.white, fontSize: 22.0, fontWeight: FontWeight.bold),
                 ),
-                const SizedBox(height: 20.0),
-                buildSearchResultList(context, state, displayList, cacheList, _loadMoreItems)
+                const SizedBox(
+                  height: 20.0,
+                ),
+                TextField(
+                  controller: _searchController,
+                  style: const TextStyle(color: Colors.white),
+                  decoration: InputDecoration(
+                      filled: true,
+                      fillColor: const Color(0xff302360),
+                      border: OutlineInputBorder(borderRadius: BorderRadius.circular(8.0), borderSide: BorderSide.none),
+                      hintText: "e.g: Taylor Swift",
+                      prefixIcon: const Icon(Icons.search),
+                      prefixIconColor: Colors.white,
+                      suffixIconConstraints: const BoxConstraints(minWidth: 16, minHeight: 16),
+                      suffixIcon: state is ItunesStateLoading
+                          ? const Padding(
+                              padding: EdgeInsets.all(12.0),
+                              child: CircularProgressIndicator(
+                                strokeWidth: 2.0,
+                                color: Colors.white,
+                              ),
+                            )
+                          : null),
+                  onChanged: (value) {
+                    if (_debounce?.isActive ?? false) {
+                      _debounce?.cancel();
+                    }
+
+                    _debounce = Timer(const Duration(milliseconds: 700), () async {
+                      if (value.length > 2) {
+                        _searchInCache(value);
+
+                        if (displayList.isEmpty) {
+                          context.read<ItunesBloc>().add(ItunesEventSearch(term: value));
+                        }
+                      }
+                    });
+                  },
+                  enabled: state is! ItunesStateLoading,
+                ),
+                const SizedBox(
+                  height: 20.0,
+                ),
+                Expanded(
+                  child: state is ItunesStateSearchSuccessful && displayList.isEmpty
+                      ? const Center(
+                          child: Text(
+                            'No results found',
+                            style: TextStyle(fontSize: 30, color: Colors.white70),
+                          ),
+                        )
+                      : NotificationListener(
+                          onNotification: (ScrollNotification scrollInfo) {
+                            if (scrollInfo.metrics.pixels == scrollInfo.metrics.maxScrollExtent && displayList.length < cacheList.length) {
+                              _loadMoreItems();
+                            }
+                            return false;
+                          },
+                          child: ListView.builder(
+                            itemCount: displayList.length,
+                            itemBuilder: (context, index) => ListTile(
+                              contentPadding: const EdgeInsets.all(8.0),
+                              leading: Image.network(displayList[index].image!),
+                              title: Text(
+                                displayList[index].trackName!,
+                                style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+                              ),
+                              subtitle: Text(
+                                'Album: ${displayList[index].collectionName!}',
+                                style: const TextStyle(color: Colors.white60),
+                              ),
+                            ),
+                          )),
+                )
               ],
             ),
           ),
