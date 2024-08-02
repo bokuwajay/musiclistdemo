@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:keysoctest/config/routes/app_route.dart';
-import 'package:keysoctest/features/iTunes/presentation/bloc/iTunes_bloc.dart';
+import 'package:keysoctest/features/iTunes/presentation/bloc/itunes_bloc.dart';
 import 'package:keysoctest/features/iTunes/presentation/pages/search_view.dart';
 import 'package:keysoctest/injection_container.dart';
 
