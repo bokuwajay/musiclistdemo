@@ -29,8 +29,8 @@ flutter pub get
 lib/
 ├── config/
 │ └── routes/
-│ │ ├── app_route_config.dart
-│ │ └── app_route.dart
+│   ├── app_route_config.dart
+│   └── app_route.dart
 ├── core/
 │ └── api/
 │ │ ├── api_helper.dart
@@ -43,34 +43,34 @@ lib/
 │ │ ├── failure_message_to_user.dart
 │ │ └── failures.dart
 │ └── usecase/
-│ │ └── usecase.dart
+│   └── usecase.dart
 ├── features/
 │ └── iTunes/
-│ │ ├── data/
-│ │ │ ├── datasources/
-│ │ │ │ └── itunes_remote_datasource.dart
-│ │ │ ├── models/
-│ │ │ │ └── track_model.dart
-│ │ │ └── repository/
-│ │ │   └── itunes_repository_impl.dart
-│ │ ├── di/
-│ │ │ └── itunes_dependency.dart
-│ │ ├── domain/
-│ │ │ ├── entities/
-│ │ │ │ └── track_entity.dart
-│ │ │ ├── repository/
-│ │ │ │ └── itunes_repository.dart
-│ │ │ └── usecase/
-│ │ │   ├── itunes_search_usecase.dart
-│ │ │   └── usecase_params.dart
-│ │ └── presentation/
-│ │ │ ├── bloc/
-│ │ │ │ ├── itunes_bloc.dart
-│ │ │ │ ├── itunes_event.dart
-│ │ │ │ └── itunes_state.dart
-│ │ │ ├── pages/
-│ │ │ │ └── search_view.dart
-│ │ │ └── widgets/
+│   ├── data/
+│   │ ├── datasources/
+│   │ │ └── itunes_remote_datasource.dart
+│   │ ├── models/
+│   │ │ └── track_model.dart
+│   │ └── repository/
+│   │   └── itunes_repository_impl.dart
+│   ├── di/
+│   │ └── itunes_dependency.dart
+│   ├── domain/
+│   │ ├── entities/
+│   │ │ └── track_entity.dart
+│   │ ├── repository/
+│   │ │ └── itunes_repository.dart
+│   │ └── usecase/
+│   │   ├── itunes_search_usecase.dart
+│   │   └── usecase_params.dart
+│   └── presentation/
+│     ├── bloc/
+│     │ ├── itunes_bloc.dart
+│     │ ├── itunes_event.dart
+│     │ └── itunes_state.dart
+│     ├── pages/
+│     │ └── search_view.dart
+│     └── widgets/
 ├── util/
 │ ├── dialogs/
 │ │ ├── error_dialog.dart
