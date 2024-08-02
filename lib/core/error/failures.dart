@@ -10,105 +10,73 @@ sealed class Failure extends Equatable {
 }
 
 class ConnectionErrorFailure extends Failure {
-  ConnectionErrorFailure({String suffix = ''})
-      : super(
-          "Connection Error: $suffix Timestamp: ${DateTime.now().toString()}",
-        );
+  ConnectionErrorFailure({String suffix = ''}) : super("Connection Error: $suffix Timestamp: ${DateTime.now().toString()}");
 }
 
 class ConnectionTimeOutFailure extends Failure {
-  ConnectionTimeOutFailure({String suffix = ''})
-      : super(
-            "Connection Time Out: $suffix Timestamp: ${DateTime.now().toString()}");
+  ConnectionTimeOutFailure({String suffix = ''}) : super("Connection Time Out: $suffix Timestamp: ${DateTime.now().toString()}");
 }
 
 class FetchDataFailure extends Failure {
-  FetchDataFailure({String suffix = ''})
-      : super(
-            "Fetch Data Failure: $suffix Timestamp: ${DateTime.now().toString()}");
+  FetchDataFailure({String suffix = ''}) : super("Fetch Data Failure: $suffix Timestamp: ${DateTime.now().toString()}");
 }
 
 class SendTimeOutFailure extends Failure {
-  SendTimeOutFailure({String suffix = ''})
-      : super("Send Time Out: $suffix Timestamp: ${DateTime.now().toString()}");
+  SendTimeOutFailure({String suffix = ''}) : super("Send Time Out: $suffix Timestamp: ${DateTime.now().toString()}");
 }
 
 class ReceiveTimeOutFailure extends Failure {
-  ReceiveTimeOutFailure({String suffix = ''})
-      : super(
-            "Receive Time Out: $suffix Timestamp: ${DateTime.now().toString()}");
+  ReceiveTimeOutFailure({String suffix = ''}) : super("Receive Time Out: $suffix Timestamp: ${DateTime.now().toString()}");
 }
 
 class BadCertificateFailure extends Failure {
-  BadCertificateFailure({String suffix = ''})
-      : super(
-            "Bad Certificate: $suffix Timestamp: ${DateTime.now().toString()}");
+  BadCertificateFailure({String suffix = ''}) : super("Bad Certificate: $suffix Timestamp: ${DateTime.now().toString()}");
 }
 
 class CancelFailure extends Failure {
-  CancelFailure({String suffix = ''})
-      : super(
-            "Cancel Failure: $suffix Timestamp: ${DateTime.now().toString()}");
+  CancelFailure({String suffix = ''}) : super("Cancel Failure: $suffix Timestamp: ${DateTime.now().toString()}");
 }
 
 class MethodNotAllowedFailure extends Failure {
-  MethodNotAllowedFailure({String suffix = ''})
-      : super(
-            "Method Not Allowed: $suffix Timestamp: ${DateTime.now().toString()}");
+  MethodNotAllowedFailure({String suffix = ''}) : super("Method Not Allowed: $suffix Timestamp: ${DateTime.now().toString()}");
 }
 
 class UnprocessableContentFailure extends Failure {
-  UnprocessableContentFailure({String suffix = ''})
-      : super(
-            "Unprocessable Content: $suffix Timestamp: ${DateTime.now().toString()}");
+  UnprocessableContentFailure({String suffix = ''}) : super("Unprocessable Content: $suffix Timestamp: ${DateTime.now().toString()}");
 }
 
 class InternalServeFailure extends Failure {
-  InternalServeFailure({String suffix = ''})
-      : super(
-            "Internal Server Failure: $suffix Timestamp: ${DateTime.now().toString()}");
+  InternalServeFailure({String suffix = ''}) : super("Internal Server Failure: $suffix Timestamp: ${DateTime.now().toString()}");
 }
 
 class BadRequestFailure extends Failure {
-  BadRequestFailure({String suffix = ''})
-      : super("Bad Request: $suffix Timestamp: ${DateTime.now().toString()}");
+  BadRequestFailure({String suffix = ''}) : super("Bad Request: $suffix Timestamp: ${DateTime.now().toString()}");
 }
 
 class NotFoundFailure extends Failure {
-  NotFoundFailure({String suffix = ''})
-      : super(
-            "Not Found Resources: $suffix Timestamp: ${DateTime.now().toString()}");
+  NotFoundFailure({String suffix = ''}) : super("Not Found Resources: $suffix Timestamp: ${DateTime.now().toString()}");
 }
 
 class CacheFailure extends Failure {
-  CacheFailure({String suffix = ''})
-      : super("Cache Failure: $suffix Timestamp: ${DateTime.now().toString()}");
+  CacheFailure({String suffix = ''}) : super("Cache Failure: $suffix Timestamp: ${DateTime.now().toString()}");
 }
 
 class UnauthorizedFailure extends Failure {
-  UnauthorizedFailure({String suffix = ''})
-      : super("Unauthorized: $suffix Timestamp: ${DateTime.now().toString()}");
+  UnauthorizedFailure({String suffix = ''}) : super("Unauthorized: $suffix Timestamp: ${DateTime.now().toString()}");
 }
 
 class ForbiddenFailure extends Failure {
-  ForbiddenFailure({String suffix = ''})
-      : super("Forbidden: $suffix Timestamp: ${DateTime.now().toString()}");
+  ForbiddenFailure({String suffix = ''}) : super("Forbidden: $suffix Timestamp: ${DateTime.now().toString()}");
 }
 
 class DuplicatedDataFailure extends Failure {
-  DuplicatedDataFailure({String suffix = ''})
-      : super(
-            "Duplicated Data: $suffix Timestamp: ${DateTime.now().toString()}");
+  DuplicatedDataFailure({String suffix = ''}) : super("Duplicated Data: $suffix Timestamp: ${DateTime.now().toString()}");
 }
 
 class MissingParamsFailure extends Failure {
-  MissingParamsFailure({String suffix = ''})
-      : super(
-            "Missing Params Failure: $suffix Timestamp: ${DateTime.now().toString()}");
+  MissingParamsFailure({String suffix = ''}) : super("Missing Params Failure: $suffix Timestamp: ${DateTime.now().toString()}");
 }
 
 class UnknownFailure extends Failure {
-  UnknownFailure({String suffix = ''})
-      : super(
-            "Unexpected Failure: $suffix Timestamp: ${DateTime.now().toString()}");
+  UnknownFailure({String suffix = ''}) : super("Unexpected Failure: $suffix Timestamp: ${DateTime.now().toString()}");
 }
