@@ -32,6 +32,10 @@
   
       "editor.wordBasedSuggestions": "off"
     },
-    "java.configuration.updateBuildConfiguration": "interactive"
+    "java.configuration.updateBuildConfiguration": "interactive",
+
+    "workbench.editorAssociations": {   
+      "*.md": "vscode.markdown.preview.editor",
+  },
   }
   
