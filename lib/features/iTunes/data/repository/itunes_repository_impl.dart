@@ -16,8 +16,7 @@ class ItunesRepositoryImpl implements ItunesRepository {
       final result = await _itunesRemoteDataSource.search(params);
       return Right(result);
     } catch (exception) {
-      Failure failure =
-          exceptionConverter(exception, 'in search of ItunesRepositoryImpl');
+      Failure failure = exceptionConverter(exception, 'in search of ItunesRepositoryImpl');
       return Left(failure);
     }
   }

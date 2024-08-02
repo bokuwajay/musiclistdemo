@@ -21,8 +21,7 @@ class ItunesSearchUseCase implements UseCase<List<TrackEntity>, Params> {
   @override
   Future<Either<Failure, List<TrackEntity>>> call(Params params) async {
     if (params.term.isEmpty) {
-      Failure failure =
-          MissingParamsFailure(suffix: 'in call of ItunesSearchUseCase');
+      Failure failure = MissingParamsFailure(suffix: 'in call of ItunesSearchUseCase');
       return Left(failure);
     }
     return await _itunesRepository.search(params);

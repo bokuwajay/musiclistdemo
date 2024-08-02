@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
-Map<String, String> failureMessagesToUser(
-    BuildContext context, String message) {
+Map<String, String> failureMessagesToUser(BuildContext context, String message) {
   String prefix = message.substring(0, message.indexOf(':'));
   switch (prefix) {
     case 'Connection Error' || 'Connection Time Out':
