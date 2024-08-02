@@ -14,8 +14,6 @@ class ItunesDependency {
 
     sl.registerLazySingleton(() => ItunesSearchUseCase(sl<ItunesRepositoryImpl>()));
 
-    sl.registerFactory(() => ItunesBloc(
-          sl<ItunesSearchUseCase>(),
-        ));
+    sl.registerFactory(() => ItunesBloc(sl<ItunesSearchUseCase>()));
   }
 }

@@ -22,6 +22,7 @@ class _SearchViewState extends State<SearchView> {
   List<TrackEntity> cacheList = [];
   int currentPage = 0;
   final int itemsPerPage = 10;
+  String sortBy = 'trackName';
 
   void _loadMoreItems() {
     setState(() {
@@ -42,9 +43,25 @@ class _SearchViewState extends State<SearchView> {
       return track.trackName!.toLowerCase().contains(lowerQuery) || track.collectionName!.toLowerCase().contains(lowerQuery);
     }).toList();
 
+    filteredList.sort(
+      (a, b) {
+        if (sortBy == 'trackName') {
+          return a.trackName!.toLowerCase().compareTo(b.trackName!.toLowerCase());
+        }
+        return a.collectionName!.toLowerCase().compareTo(b.collectionName!.toLowerCase());
+      },
+    );
+
     setState(() {
       displayList = filteredList.take(itemsPerPage).toList();
       currentPage = 1;
+    });
+  }
+
+  void _toggleSort() {
+    setState(() {
+      sortBy = sortBy == 'trackName' ? 'collectionName' : 'trackName';
+      _searchInCache(_searchController.text);
     });
   }
 
@@ -84,49 +101,64 @@ class _SearchViewState extends State<SearchView> {
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Text(
-                  'Search for Music',
-                  style: TextStyle(color: Colors.white, fontSize: 22.0, fontWeight: FontWeight.bold),
-                ),
-                const SizedBox(
-                  height: 20.0,
-                ),
-                TextField(
-                  controller: _searchController,
-                  style: const TextStyle(color: Colors.white),
-                  decoration: InputDecoration(
-                      filled: true,
-                      fillColor: const Color(0xff302360),
-                      border: OutlineInputBorder(borderRadius: BorderRadius.circular(8.0), borderSide: BorderSide.none),
-                      hintText: "e.g: Taylor Swift",
-                      prefixIcon: const Icon(Icons.search),
-                      prefixIconColor: Colors.white,
-                      suffixIconConstraints: const BoxConstraints(minWidth: 16, minHeight: 16),
-                      suffixIcon: state is ItunesStateLoading
-                          ? const Padding(
-                              padding: EdgeInsets.all(12.0),
-                              child: CircularProgressIndicator(
-                                strokeWidth: 2.0,
-                                color: Colors.white,
-                              ),
-                            )
-                          : null),
-                  onChanged: (value) {
-                    if (_debounce?.isActive ?? false) {
-                      _debounce?.cancel();
-                    }
+                Row(
+                  children: [
+                    Expanded(
+                      child: TextField(
+                        cursorColor: Colors.amber[400],
+                        controller: _searchController,
+                        style: TextStyle(color: Colors.amber[400]),
+                        decoration: InputDecoration(
+                            filled: true,
+                            fillColor: Colors.grey[900],
+                            border: OutlineInputBorder(borderRadius: BorderRadius.circular(8.0), borderSide: BorderSide.none),
+                            hintText: "e.g: Taylor Swift",
+                            hintStyle: TextStyle(color: Colors.grey[600]),
+                            prefixIcon: Icon(
+                              Icons.search,
+                              size: 30,
+                              color: Colors.amber[400],
+                            ),
+                            suffixIconConstraints: const BoxConstraints(minWidth: 16, minHeight: 16),
+                            suffixIcon: state is ItunesStateLoading
+                                ? Padding(
+                                    padding: const EdgeInsets.all(12.0),
+                                    child: CircularProgressIndicator(
+                                      strokeWidth: 2.0,
+                                      color: Colors.amber[400],
+                                    ),
+                                  )
+                                : null),
+                        onChanged: (value) {
+                          if (_debounce?.isActive ?? false) {
+                            _debounce?.cancel();
+                          }
 
-                    _debounce = Timer(const Duration(milliseconds: 700), () async {
-                      if (value.length > 2) {
-                        _searchInCache(value);
+                          _debounce = Timer(const Duration(milliseconds: 700), () async {
+                            if (value.length > 2) {
+                              _searchInCache(value);
 
-                        if (displayList.isEmpty) {
-                          context.read<ItunesBloc>().add(ItunesEventSearch(term: value));
-                        }
-                      }
-                    });
-                  },
-                  enabled: state is! ItunesStateLoading,
+                              if (displayList.isEmpty) {
+                                context.read<ItunesBloc>().add(ItunesEventSearch(term: value));
+                              }
+                            }
+                          });
+                        },
+                        enabled: state is! ItunesStateLoading,
+                      ),
+                    ),
+                    const SizedBox(
+                      width: 8.0,
+                    ),
+                    IconButton(
+                      icon: Icon(
+                        size: 40,
+                        sortBy == 'trackName' ? Icons.switch_right : Icons.switch_left,
+                        color: Colors.amber[400],
+                      ),
+                      onPressed: displayList.isEmpty ? null : _toggleSort,
+                    )
+                  ],
                 ),
                 const SizedBox(
                   height: 20.0,
@@ -153,14 +185,15 @@ class _SearchViewState extends State<SearchView> {
                               leading: Image.network(displayList[index].image!),
                               title: Text(
                                 displayList[index].trackName!,
-                                style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+                                style: TextStyle(color: Colors.amber[400], fontWeight: FontWeight.bold),
                               ),
                               subtitle: Text(
                                 'Album: ${displayList[index].collectionName!}',
                                 style: const TextStyle(color: Colors.white60),
                               ),
                             ),
-                          )),
+                          ),
+                        ),
                 )
               ],
             ),
