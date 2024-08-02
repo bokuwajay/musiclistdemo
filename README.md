@@ -77,12 +77,6 @@ lib/
 │ │ └── generic_dialog.dart
 │ ├── logger.dart
 │ └── observer.dart
-
-│ │ └── widgets/
-│ │ └── search_view.dart
-├── util/
-│ └── dialogs/
-│ └── error_dialog.dart
 ├── app.dart
 ├── injection_container.dart
 └── main.dart
