@@ -20,6 +20,9 @@ git clone https://github.com/bokuwajay/keysoctest.git
 
 cd keysoctest
 
+echo "baseURL = ''\nitunesBaseURL = 'https://itunes.apple.com';" > ./assets/env/.env.development
+echo "baseURL = ''\nitunesBaseURL = 'https://itunes.apple.com';" > ./assets/env/.env.production
+
 flutter pub get
 ```
 
