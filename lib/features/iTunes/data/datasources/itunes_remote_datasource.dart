@@ -4,7 +4,7 @@ import 'package:keysoctest/features/iTunes/data/models/track_model.dart';
 import 'package:keysoctest/features/iTunes/domain/usecase/usecase_params.dart';
 import 'package:keysoctest/util/logger.dart';
 
-sealed class ItunesRemoteDataSource {
+abstract class ItunesRemoteDataSource {
   Future<List<TrackModel>> search(SearchParams params);
 }
 
