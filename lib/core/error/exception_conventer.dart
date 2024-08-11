@@ -1,3 +1,5 @@
+// ignore_for_file: type_literal_in_constant_pattern
+
 import 'package:keysoctest/core/error/exceptions.dart';
 import 'package:keysoctest/core/error/failures.dart';
 

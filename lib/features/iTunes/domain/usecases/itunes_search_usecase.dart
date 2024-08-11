@@ -3,7 +3,7 @@ import 'package:fpdart/fpdart.dart';
 import 'package:keysoctest/core/error/failures.dart';
 import 'package:keysoctest/core/usecase/usecase.dart';
 import 'package:keysoctest/features/iTunes/domain/entities/track_entity.dart';
-import 'package:keysoctest/features/iTunes/domain/repository/itunes_repository.dart';
+import 'package:keysoctest/features/iTunes/domain/repositories/itunes_repository.dart';
 
 class Params extends Equatable {
   final String term;
@@ -27,3 +27,7 @@ class ItunesSearchUseCase implements UseCase<List<TrackEntity>, Params> {
     return await _itunesRepository.search(params);
   }
 }
+
+
+// usecase is for orchestrate the flow of data "to" and "from" the entity
+// Becasue of single responsibility principle, each usecase must be indepent of other usecase
