@@ -1,7 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:keysoctest/core/error/failure_conventer.dart';
-import 'package:keysoctest/features/iTunes/domain/usecase/itunes_search_usecase.dart';
-import 'package:keysoctest/features/iTunes/domain/usecase/usecase_params.dart';
+import 'package:keysoctest/features/iTunes/domain/usecases/itunes_search_usecase.dart';
+import 'package:keysoctest/features/iTunes/domain/usecases/usecase_params.dart';
 import 'package:keysoctest/features/iTunes/presentation/bloc/itunes_event.dart';
 import 'package:keysoctest/features/iTunes/presentation/bloc/itunes_state.dart';
 

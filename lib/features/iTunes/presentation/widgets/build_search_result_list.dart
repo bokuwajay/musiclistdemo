@@ -4,6 +4,7 @@ import 'package:keysoctest/features/iTunes/presentation/bloc/itunes_state.dart';
 
 Widget buildSearchResultList(ItunesState state, List<TrackEntity> displayList, List<TrackEntity> cacheList, loadMoreItems) {
   return Expanded(
+    key: const Key('song list'),
     child: state is ItunesStateSearchSuccessful && displayList.isEmpty
         ? const Center(
             child: Text(
