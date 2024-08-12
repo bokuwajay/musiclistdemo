@@ -3,6 +3,7 @@ import 'package:fpdart/fpdart.dart';
 import 'package:keysoctest/core/error/exception_conventer.dart';
 import 'package:keysoctest/core/error/exceptions.dart';
 import 'package:keysoctest/core/error/failures.dart';
+import 'package:keysoctest/features/iTunes/data/models/track_model.dart';
 import 'package:keysoctest/features/iTunes/data/repositories/itunes_repository_impl.dart';
 import 'package:keysoctest/features/iTunes/domain/entities/track_entity.dart';
 import 'package:keysoctest/features/iTunes/domain/usecases/usecase_params.dart';
@@ -21,31 +22,38 @@ void main() {
 
   const params = SearchParams(term: 'Taylor');
 
-  // const testTrackModel = TrackModel(
-  //   trackName: 'Surrender',
-  //   collectionName: 'Surrender - Single',
-  //   image: 'https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/2c/23/0f/2c230f3c-db35-43ea-f0dc-45284dad6bc7/886448400653.jpg/100x100bb.jpg',
-  //   artistName: 'Natalie Taylor',
-  // );
+  const testTrackModel = TrackModel(
+    trackName: 'Surrender',
+    collectionName: 'Surrender - Single',
+    image: 'https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/2c/23/0f/2c230f3c-db35-43ea-f0dc-45284dad6bc7/886448400653.jpg/100x100bb.jpg',
+    artistName: 'Natalie Taylor',
+  );
 
-  // const testTrackEntity = TrackEntity(
-  //   trackName: 'Surrender',
-  //   collectionName: 'Surrender - Single',
-  //   image: 'https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/2c/23/0f/2c230f3c-db35-43ea-f0dc-45284dad6bc7/886448400653.jpg/100x100bb.jpg',
-  //   artistName: 'Natalie Taylor',
-  // );
+  const testTrackEntity = TrackEntity(
+    trackName: 'Surrender',
+    collectionName: 'Surrender - Single',
+    image: 'https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/2c/23/0f/2c230f3c-db35-43ea-f0dc-45284dad6bc7/886448400653.jpg/100x100bb.jpg',
+    artistName: 'Natalie Taylor',
+  );
 
   group('search itunes song list ', () {
-    // test('should return list of songs when call to data source is successful', () async {
-    //   // arrange
-    //   when(mockItunesRemoteDataSource.search(params)).thenAnswer((_) async => [testTrackModel]);
+    test('should return list of songs when call to data source is successful', () async {
+      // arrange
+      when(mockItunesRemoteDataSource.search(params)).thenAnswer((_) async => [testTrackModel]);
 
-    //   // act
-    //   final result = await itunesRepositoryImpl.search(params);
+      // act
+      final result = await itunesRepositoryImpl.search(params);
 
-    //   // assert
-    //   expect(result, equals(Right<Failure, List<TrackEntity>>([testTrackEntity])));
-    // });
+      // Check if result is a Right instance
+      expect(result, isA<Right<Failure, List<TrackEntity>>>());
+
+      // Extract the value from Right
+      final actualEntities = (result as Right<Failure, List<TrackEntity>>).value;
+
+      // Manually compare the expected and actual results
+      expect(actualEntities.length, equals(1));
+      expect(actualEntities[0], equals(testTrackEntity));
+    });
 
     test('should return failure when call to data source is unsuccessful', () async {
       // arrange
